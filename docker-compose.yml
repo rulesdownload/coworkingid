@@ -1,0 +1,30 @@
+version: '3'
+services:
+    nginx:
+        image: nginx
+        depends_on:
+            - php-fpm
+        networks:
+            - sail
+        volumes:
+            - ./:/var/www/
+            - ./docker:/etc/nginx/templates
+        ports:
+            - "80:80"
+            - "443:443"
+        environment:
+            - NGINX_HOST=coworkingid24k.xyz
+            - NGINX_PORT=443
+
+    php-fpm:
+        image: cyberduck/php-fpm-laravel:8.1
+        networks:
+            - sail
+        volumes:
+            - ./:/var/www
+        environment:
+            - XDEBUG=TRUE
+
+networks:
+    sail:
+        driver: bridge
